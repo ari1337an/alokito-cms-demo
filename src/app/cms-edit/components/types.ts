@@ -1,4 +1,12 @@
 export interface Slide {
+  containerPaddingTop: number;
+  containerPaddingBottom: number;
+  containerPaddingLeft: number;
+  containerPaddingRight: number;
+  containerMarginTop: number;
+  containerMarginBottom: number;
+  containerMarginLeft: number;
+  containerMarginRight: number;
   id?: string;
   title: string;
   description: string;
@@ -15,11 +23,14 @@ export interface Slide {
     | "custom";
   buttonIcon: string;
   buttonIconSize: number;
+  buttonIconColor: string;
   buttonGap: number;
   buttonPaddingTop: number;
   buttonPaddingBottom: number;
   buttonPaddingLeft: number;
   buttonPaddingRight: number;
+  buttonWidth: string;
+  buttonCustomWidth: number;
   imageUrl: string;
   imageFit: "contain" | "cover" | "fill" | "none" | "scale-down";
   imageBackground: "transparent" | "solid";
@@ -39,6 +50,10 @@ export interface Slide {
   heroImagePaddingBottom: number;
   heroImagePaddingLeft: number;
   heroImagePaddingRight: number;
+  heroImageMarginTop: number;
+  heroImageMarginBottom: number;
+  heroImageMarginLeft: number;
+  heroImageMarginRight: number;
   contentPaddingX: number;
   contentPaddingY: number;
   contentFont: string;
@@ -66,4 +81,4 @@ export interface Slide {
   descriptionMarginBottom: number;
   descriptionMarginLeft: number;
   descriptionMarginRight: number;
-} 
+}

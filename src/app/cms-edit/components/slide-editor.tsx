@@ -21,7 +21,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Slide } from "./types";
-import DynamicIcon, { formatIconName } from "./DynamicIcon";
+import DynamicIcon, { formatIconName } from "./render/DynamicIcon";
 import RenderSlide from "./render/RenderSlide";
 import {
   Accordion,
@@ -36,6 +36,7 @@ interface SlideEditorProps {
   slide: Slide;
   onSave: (slide: Slide) => void;
   onCancel: () => void;
+  isSaving?: boolean;
 }
 
 interface MarginControlsProps {
@@ -341,7 +342,12 @@ function PaddingControls({
   );
 }
 
-export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
+export function SlideEditor({
+  slide,
+  onSave,
+  onCancel,
+  isSaving = false,
+}: SlideEditorProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [editedSlide, setEditedSlide] = useState<Slide>(slide);
   const { icons, loading, hasMore, loadMoreIcons, filterIcons } =
@@ -420,6 +426,79 @@ export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
                 </AccordionTrigger>
                 <AccordionContent className="px-4 pb-4">
                   <div className="space-y-6">
+                    {/* Title */}
+                    <div className="space-y-2">
+                      <Label>Title</Label>
+                      <Textarea
+                        value={editedSlide.title}
+                        onChange={(e) => handleChange("title", e.target.value)}
+                        placeholder="Enter slide title"
+                        rows={2}
+                      />
+                    </div>
+
+                    {/* Description */}
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={editedSlide.description}
+                        onChange={(e) =>
+                          handleChange("description", e.target.value)
+                        }
+                        placeholder="Enter slide description"
+                        rows={4}
+                      />
+                    </div>
+
+                    {/* Container Margin and Padding */}
+                    <div className="space-y-6">
+                      <h3 className="text-base font-semibold">
+                        Container Settings
+                      </h3>
+
+                      {/* Container Margin */}
+                      <MarginControls
+                        label="Container Margin"
+                        top={editedSlide.containerMarginTop ?? 0}
+                        bottom={editedSlide.containerMarginBottom ?? 0}
+                        left={editedSlide.containerMarginLeft ?? 0}
+                        right={editedSlide.containerMarginRight ?? 0}
+                        onChangeTop={(value: number) =>
+                          handleChange("containerMarginTop", value)
+                        }
+                        onChangeBottom={(value: number) =>
+                          handleChange("containerMarginBottom", value)
+                        }
+                        onChangeLeft={(value: number) =>
+                          handleChange("containerMarginLeft", value)
+                        }
+                        onChangeRight={(value: number) =>
+                          handleChange("containerMarginRight", value)
+                        }
+                      />
+
+                      {/* Container Padding */}
+                      <PaddingControls
+                        label="Container Padding"
+                        top={editedSlide.containerPaddingTop ?? 0}
+                        bottom={editedSlide.containerPaddingBottom ?? 0}
+                        left={editedSlide.containerPaddingLeft ?? 0}
+                        right={editedSlide.containerPaddingRight ?? 0}
+                        onChangeTop={(value: number) =>
+                          handleChange("containerPaddingTop", value)
+                        }
+                        onChangeBottom={(value: number) =>
+                          handleChange("containerPaddingBottom", value)
+                        }
+                        onChangeLeft={(value: number) =>
+                          handleChange("containerPaddingLeft", value)
+                        }
+                        onChangeRight={(value: number) =>
+                          handleChange("containerPaddingRight", value)
+                        }
+                      />
+                    </div>
+
                     {/* Title Settings */}
                     <div className="space-y-4">
                       <h3 className="text-base font-semibold">
@@ -787,10 +866,26 @@ export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
                       {/* Image Margin */}
                       <MarginControls
                         label="Image Margin"
-                        top={typeof editedSlide.imageMargin === 'string' ? parseInt(editedSlide.imageMargin, 10) || 0 : editedSlide.imageMargin ?? 0}
-                        bottom={typeof editedSlide.imageMargin === 'string' ? parseInt(editedSlide.imageMargin, 10) || 0 : editedSlide.imageMargin ?? 0}
-                        left={typeof editedSlide.imageMargin === 'string' ? parseInt(editedSlide.imageMargin, 10) || 0 : editedSlide.imageMargin ?? 0}
-                        right={typeof editedSlide.imageMargin === 'string' ? parseInt(editedSlide.imageMargin, 10) || 0 : editedSlide.imageMargin ?? 0}
+                        top={
+                          typeof editedSlide.imageMargin === "string"
+                            ? parseInt(editedSlide.imageMargin, 10) || 0
+                            : editedSlide.imageMargin ?? 0
+                        }
+                        bottom={
+                          typeof editedSlide.imageMargin === "string"
+                            ? parseInt(editedSlide.imageMargin, 10) || 0
+                            : editedSlide.imageMargin ?? 0
+                        }
+                        left={
+                          typeof editedSlide.imageMargin === "string"
+                            ? parseInt(editedSlide.imageMargin, 10) || 0
+                            : editedSlide.imageMargin ?? 0
+                        }
+                        right={
+                          typeof editedSlide.imageMargin === "string"
+                            ? parseInt(editedSlide.imageMargin, 10) || 0
+                            : editedSlide.imageMargin ?? 0
+                        }
                         onChangeTop={(value: number) =>
                           handleChange("imageMargin", value)
                         }
@@ -826,6 +921,157 @@ export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
                         }
                       />
                     </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              {/* Hero Image Section */}
+              <AccordionItem value="heroImage" className="border rounded-lg">
+                <AccordionTrigger className="px-4 hover:no-underline">
+                  <span className="text-lg font-semibold">Hero Image</span>
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4">
+                  <div className="space-y-6">
+                    <h3 className="text-base font-semibold">
+                      Hero Image Settings
+                    </h3>
+
+                    {/* Hero Image URL */}
+                    <div className="space-y-2">
+                      <Label>Hero Image URL</Label>
+                      <Input
+                        value={editedSlide.heroImageUrl}
+                        onChange={(e) =>
+                          handleChange("heroImageUrl", e.target.value)
+                        }
+                        placeholder="https://example.com/image.jpg"
+                      />
+                    </div>
+
+                    {/* Hero Image Fit */}
+                    <div className="space-y-2">
+                      <Label>Image Fit</Label>
+                      <Select
+                        value={editedSlide.heroImageFit}
+                        onValueChange={(value) =>
+                          handleChange("heroImageFit", value)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select image fit" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="cover">Cover</SelectItem>
+                          <SelectItem value="contain">Contain</SelectItem>
+                          <SelectItem value="fill">Fill</SelectItem>
+                          <SelectItem value="none">None</SelectItem>
+                          <SelectItem value="scale-down">Scale Down</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Hero Image Background */}
+                    <div className="space-y-2">
+                      <Label>Background Type</Label>
+                      <Select
+                        value={editedSlide.heroImageBackground}
+                        onValueChange={(value) =>
+                          handleChange("heroImageBackground", value)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select background type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="transparent">
+                            Transparent
+                          </SelectItem>
+                          <SelectItem value="solid">Solid Color</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Background Color (only shown when solid is selected) */}
+                    {editedSlide.heroImageBackground === "solid" && (
+                      <div className="space-y-2">
+                        <Label>Background Color</Label>
+                        <div className="flex items-center gap-2">
+                          <div className="relative border rounded p-1 w-16 h-10">
+                            <Input
+                              type="color"
+                              value={editedSlide.heroImageBackgroundColor}
+                              onChange={(e) =>
+                                handleChange(
+                                  "heroImageBackgroundColor",
+                                  e.target.value
+                                )
+                              }
+                              className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                            />
+                            <div
+                              className="w-full h-full rounded"
+                              style={{
+                                backgroundColor:
+                                  editedSlide.heroImageBackgroundColor,
+                              }}
+                            />
+                          </div>
+                          <Input
+                            value={editedSlide.heroImageBackgroundColor}
+                            onChange={(e) =>
+                              handleChange(
+                                "heroImageBackgroundColor",
+                                e.target.value
+                              )
+                            }
+                            placeholder="#000000"
+                            className="flex-1"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Hero Image Margin */}
+                    <MarginControls
+                      label="Hero Image Margin"
+                      top={editedSlide.heroImageMarginTop ?? 0}
+                      bottom={editedSlide.heroImageMarginBottom ?? 0}
+                      left={editedSlide.heroImageMarginLeft ?? 0}
+                      right={editedSlide.heroImageMarginRight ?? 0}
+                      onChangeTop={(value: number) =>
+                        handleChange("heroImageMarginTop", value)
+                      }
+                      onChangeBottom={(value: number) =>
+                        handleChange("heroImageMarginBottom", value)
+                      }
+                      onChangeLeft={(value: number) =>
+                        handleChange("heroImageMarginLeft", value)
+                      }
+                      onChangeRight={(value: number) =>
+                        handleChange("heroImageMarginRight", value)
+                      }
+                    />
+
+                    {/* Hero Image Padding */}
+                    <PaddingControls
+                      label="Hero Image Padding"
+                      top={editedSlide.heroImagePaddingTop}
+                      bottom={editedSlide.heroImagePaddingBottom}
+                      left={editedSlide.heroImagePaddingLeft}
+                      right={editedSlide.heroImagePaddingRight}
+                      onChangeTop={(value: number) =>
+                        handleChange("heroImagePaddingTop", value)
+                      }
+                      onChangeBottom={(value: number) =>
+                        handleChange("heroImagePaddingBottom", value)
+                      }
+                      onChangeLeft={(value: number) =>
+                        handleChange("heroImagePaddingLeft", value)
+                      }
+                      onChangeRight={(value: number) =>
+                        handleChange("heroImagePaddingRight", value)
+                      }
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -964,6 +1210,7 @@ export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
                       )}
                     </div>
 
+                    {/* Button Icon */}
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label>Icon</Label>
@@ -985,7 +1232,8 @@ export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
                                     size={16}
                                     color={
                                       editedSlide.buttonVariant === "custom"
-                                        ? editedSlide.buttonTextColor
+                                        ? editedSlide.buttonIconColor ||
+                                          editedSlide.buttonTextColor
                                         : undefined
                                     }
                                   />
@@ -1044,7 +1292,8 @@ export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
                                           color={
                                             editedSlide.buttonVariant ===
                                             "custom"
-                                              ? editedSlide.buttonTextColor
+                                              ? editedSlide.buttonIconColor ||
+                                                editedSlide.buttonTextColor
                                               : undefined
                                           }
                                         />
@@ -1063,6 +1312,146 @@ export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
                           </SelectContent>
                         </Select>
                       </div>
+
+                      {/* Icon Size */}
+                      <div className="space-y-2">
+                        <Label>Icon Size</Label>
+                        <div className="flex items-center gap-2">
+                          <Slider
+                            min={12}
+                            max={36}
+                            step={1}
+                            value={[editedSlide.buttonIconSize]}
+                            onValueChange={([value]) =>
+                              handleChange("buttonIconSize", value)
+                            }
+                          />
+                          <span className="text-sm bg-muted px-2 py-0.5 rounded">
+                            {editedSlide.buttonIconSize}px
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Icon Color (only for custom variant) */}
+                    {editedSlide.buttonVariant === "custom" &&
+                      editedSlide.buttonIcon && (
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Label>Icon Color</Label>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                handleChange(
+                                  "buttonIconColor",
+                                  editedSlide.buttonTextColor
+                                )
+                              }
+                              className="h-7 text-xs"
+                            >
+                              Match Text Color
+                            </Button>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="relative border rounded p-1 w-16 h-10">
+                              <Input
+                                type="color"
+                                value={
+                                  editedSlide.buttonIconColor ||
+                                  editedSlide.buttonTextColor
+                                }
+                                onChange={(e) =>
+                                  handleChange(
+                                    "buttonIconColor",
+                                    e.target.value
+                                  )
+                                }
+                                className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                              />
+                              <div
+                                className="w-full h-full rounded"
+                                style={{
+                                  backgroundColor:
+                                    editedSlide.buttonIconColor ||
+                                    editedSlide.buttonTextColor,
+                                }}
+                              />
+                            </div>
+                            <Input
+                              value={
+                                editedSlide.buttonIconColor ||
+                                editedSlide.buttonTextColor
+                              }
+                              onChange={(e) =>
+                                handleChange("buttonIconColor", e.target.value)
+                              }
+                              placeholder="#ffffff"
+                              className="flex-1"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                    {/* Icon Gap */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Icon Gap</Label>
+                        <span className="text-sm bg-muted px-2 py-0.5 rounded">
+                          {editedSlide.buttonGap}px
+                        </span>
+                      </div>
+                      <Slider
+                        min={0}
+                        max={24}
+                        step={1}
+                        value={[editedSlide.buttonGap]}
+                        onValueChange={([value]) =>
+                          handleChange("buttonGap", value)
+                        }
+                      />
+                    </div>
+
+                    {/* Button Width Control */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Button Width</Label>
+                        <Select
+                          value={editedSlide.buttonWidth || "auto"}
+                          onValueChange={(value) =>
+                            handleChange("buttonWidth", value)
+                          }
+                        >
+                          <SelectTrigger className="w-[120px]">
+                            <SelectValue placeholder="Width" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="auto">Auto</SelectItem>
+                            <SelectItem value="full">Full Width</SelectItem>
+                            <SelectItem value="custom">Custom</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Custom width slider - only shown when "custom" is selected */}
+                      {editedSlide.buttonWidth === "custom" && (
+                        <div className="pt-2">
+                          <div className="flex items-center gap-2">
+                            <Slider
+                              min={100}
+                              max={500}
+                              step={10}
+                              value={[editedSlide.buttonCustomWidth || 200]}
+                              onValueChange={([value]) =>
+                                handleChange("buttonCustomWidth", value)
+                              }
+                            />
+                            <span className="text-sm bg-muted px-2 py-0.5 rounded w-16 text-center">
+                              {editedSlide.buttonCustomWidth || 200}px
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <PaddingControls
@@ -1094,10 +1483,12 @@ export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
         {/* Fixed Footer */}
         <div className="border-t p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shrink-0">
           <div className="flex justify-end gap-4">
-            <Button variant="outline" onClick={onCancel}>
+            <Button variant="outline" onClick={onCancel} disabled={isSaving}>
               Cancel
             </Button>
-            <Button onClick={() => onSave(editedSlide)}>Save Changes</Button>
+            <Button onClick={() => onSave(editedSlide)} disabled={isSaving}>
+              {isSaving ? "Saving..." : "Save Changes"}
+            </Button>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import DynamicIcon from "../DynamicIcon";
+import DynamicIcon from "./DynamicIcon";
 
 interface RenderButtonProps {
   buttonText: string;
@@ -9,6 +9,7 @@ interface RenderButtonProps {
   buttonVariant: string;
   buttonIcon: string;
   buttonIconSize: number;
+  buttonIconColor?: string;
   buttonGap: number;
   buttonPaddingTop: number;
   buttonPaddingBottom: number;
@@ -16,6 +17,8 @@ interface RenderButtonProps {
   buttonPaddingRight: number;
   buttonBgColor: string;
   buttonTextColor: string;
+  buttonWidth?: string;
+  buttonCustomWidth?: number;
   contentFont: string;
   compact?: boolean;
   onClick?: () => void;
@@ -27,6 +30,7 @@ export default function RenderButton({
   buttonVariant,
   buttonIcon,
   buttonIconSize,
+  buttonIconColor,
   buttonGap,
   buttonPaddingTop,
   buttonPaddingBottom,
@@ -34,6 +38,8 @@ export default function RenderButton({
   buttonPaddingRight,
   buttonBgColor,
   buttonTextColor,
+  buttonWidth = "auto",
+  buttonCustomWidth = 200,
   contentFont,
   compact = false,
   onClick,
@@ -49,14 +55,28 @@ export default function RenderButton({
       color: buttonTextColor,
       border: "none",
     }),
+    ...(buttonWidth === "custom" && {
+      width: `${buttonCustomWidth}px`,
+    }),
+    fontWeight: "bold",
   };
+
+  // Determine button container class based on width
+  const containerClass = cn(
+    buttonWidth === "full" ? "w-full" : "w-auto",
+    "md:w-auto"
+  );
 
   // Common button class names
   const buttonClassNames = cn(
     compact ? "text-base" : "text-lg",
     `font-[${contentFont}]`,
-    "w-full md:w-auto" // Full width on mobile, auto width on md and up
+    buttonWidth === "full" ? "w-full" : "w-auto" // Full width only when explicitly set
   );
+
+  // Determine icon color (use dedicated icon color if available, otherwise fall back to text color for custom variant)
+  const iconColor =
+    buttonVariant === "custom" ? buttonIconColor || buttonTextColor : undefined;
 
   if (onClick) {
     return (
@@ -76,7 +96,7 @@ export default function RenderButton({
             <DynamicIcon
               name={buttonIcon}
               size={compact ? buttonIconSize * 0.75 : buttonIconSize}
-              color={buttonVariant === "custom" ? buttonTextColor : undefined}
+              color={iconColor}
             />
           )}
         </span>
@@ -85,7 +105,7 @@ export default function RenderButton({
   }
 
   return (
-    <div className="w-full md:w-auto">
+    <div className={containerClass}>
       <Button
         variant={
           buttonVariant === "custom" ? "outline" : (buttonVariant as any)
@@ -106,7 +126,7 @@ export default function RenderButton({
               <DynamicIcon
                 name={buttonIcon}
                 size={compact ? buttonIconSize * 0.75 : buttonIconSize}
-                color={buttonVariant === "custom" ? buttonTextColor : undefined}
+                color={iconColor}
               />
             )}
           </span>

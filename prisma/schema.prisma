@@ -14,43 +14,96 @@ datasource db {
 }
 
 model Slide {
-  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
-  title                String
-  description          String
-  buttonText           String
-  buttonLink           String
-  buttonVariant        String
-  buttonIcon           String   @default("")
-  buttonIconSize       Int      @default(16)
-  buttonGap            Int      @default(2)
+  id          String @id @default(cuid()) @map("_id")
+  title       String
+  description String
+
+  // Button properties
+  buttonText          String
+  buttonLink          String
+  buttonVariant       String
+  buttonIcon          String
+  buttonIconSize      Int
+  buttonIconColor     String?
+  buttonGap           Int
+  buttonPaddingTop    Int
+  buttonPaddingBottom Int
+  buttonPaddingLeft   Int
+  buttonPaddingRight  Int
+  buttonBgColor       String
+  buttonTextColor     String
+  buttonWidth         String?
+  buttonCustomWidth   Int?
+
+  // Background image properties
   imageUrl             String
-  imageFit             String   @default("cover")
-  imageBackground      String   @default("transparent")
+  imageFit             String
+  imageBackground      String
   imageBackgroundColor String?
   backgroundColor      String
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-  imageMargin          String   @default("")
-  imagePadding         String   @default("")
-  buttonPaddingX       Int      @default(4) // Default horizontal padding
-  buttonPaddingY       Int      @default(2) // Default vertical padding
+  imageMargin          String
+  imagePaddingTop      Int
+  imagePaddingBottom   Int
+  imagePaddingLeft     Int
+  imagePaddingRight    Int
 
-  // Hero Image fields (new)
-  heroImageUrl             String  @default("")
-  heroImageFit             String  @default("cover")
-  heroImageBackground      String  @default("transparent")
+  // Hero image properties
+  heroImageUrl             String
+  heroImageFit             String
+  heroImageBackground      String
   heroImageBackgroundColor String?
-  heroImageMargin          String  @default("")
-  heroImagePadding         String  @default("")
-  contentPaddingX          Int     @default(4)
-  contentPaddingY          Int     @default(4)
-  contentFont              String  @default("Inter")
-  titleFontSize            Int     @default(48) // Default for h1
-  titleFontWeight          Int     @default(700) // Default bold
-  descriptionFontSize      Int     @default(18) // Default for p
-  descriptionFontWeight    Int     @default(400) // Default normal
-  titleColor               String  @default("#000000")
-  descriptionColor         String  @default("#374151") // Default gray-700
-  buttonBgColor            String  @default("#000000")
-  buttonTextColor          String  @default("#ffffff")
+  heroImageMarginTop       Int?
+  heroImageMarginBottom    Int?
+  heroImageMarginLeft      Int?
+  heroImageMarginRight     Int?
+  heroImageMargin          String?
+  heroImagePaddingTop      Int
+  heroImagePaddingBottom   Int
+  heroImagePaddingLeft     Int
+  heroImagePaddingRight    Int
+
+  // Content properties
+  contentPaddingX Int
+  contentPaddingY Int
+  contentFont     String
+
+  // Container properties
+  containerMarginTop     Int?
+  containerMarginBottom  Int?
+  containerMarginLeft    Int?
+  containerMarginRight   Int?
+  containerPaddingTop    Int?
+  containerPaddingBottom Int?
+  containerPaddingLeft   Int?
+  containerPaddingRight  Int?
+
+  // Text properties
+  titleFontSize         Int
+  titleFontWeight       Int
+  descriptionFontSize   Int
+  descriptionFontWeight Int
+  titleColor            String
+  descriptionColor      String
+
+  // Layout properties
+  titlePaddingTop          Int
+  titlePaddingBottom       Int
+  titlePaddingLeft         Int
+  titlePaddingRight        Int
+  descriptionPaddingTop    Int
+  descriptionPaddingBottom Int
+  descriptionPaddingLeft   Int
+  descriptionPaddingRight  Int
+  titleMarginTop           Int
+  titleMarginBottom        Int
+  titleMarginLeft          Int
+  titleMarginRight         Int
+  descriptionMarginTop     Int
+  descriptionMarginBottom  Int
+  descriptionMarginLeft    Int
+  descriptionMarginRight   Int
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

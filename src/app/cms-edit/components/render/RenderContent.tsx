@@ -45,6 +45,7 @@ export default function RenderContent({ slide, compact = false }: RenderContentP
         buttonVariant={slide.buttonVariant}
         buttonIcon={slide.buttonIcon}
         buttonIconSize={slide.buttonIconSize}
+        buttonIconColor={slide.buttonIconColor}
         buttonGap={slide.buttonGap}
         buttonPaddingTop={slide.buttonPaddingTop}
         buttonPaddingBottom={slide.buttonPaddingBottom}
@@ -52,6 +53,8 @@ export default function RenderContent({ slide, compact = false }: RenderContentP
         buttonPaddingRight={slide.buttonPaddingRight}
         buttonBgColor={slide.buttonBgColor}
         buttonTextColor={slide.buttonTextColor}
+        buttonWidth={slide.buttonWidth}
+        buttonCustomWidth={slide.buttonCustomWidth}
         contentFont={slide.contentFont}
         compact={compact}
       />

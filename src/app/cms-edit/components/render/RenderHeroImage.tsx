@@ -5,7 +5,10 @@ interface RenderHeroImageProps {
   heroImageFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
   heroImageBackground?: "transparent" | "solid";
   heroImageBackgroundColor?: string;
-  heroImageMargin?: string;
+  heroImageMarginTop?: number;
+  heroImageMarginBottom?: number;
+  heroImageMarginLeft?: number;
+  heroImageMarginRight?: number;
   heroImagePaddingTop?: number;
   heroImagePaddingBottom?: number;
   heroImagePaddingLeft?: number;
@@ -17,7 +20,10 @@ export default function RenderHeroImage({
   heroImageFit = "cover",
   heroImageBackground = "transparent",
   heroImageBackgroundColor,
-  heroImageMargin = "0",
+  heroImageMarginTop = 0,
+  heroImageMarginBottom = 0,
+  heroImageMarginLeft = 0,
+  heroImageMarginRight = 0,
   heroImagePaddingTop = 0,
   heroImagePaddingBottom = 0,
   heroImagePaddingLeft = 0,
@@ -36,7 +42,10 @@ export default function RenderHeroImage({
           heroImageBackground === "solid"
             ? heroImageBackgroundColor
             : undefined,
-        margin: heroImageMargin,
+        marginTop: `${heroImageMarginTop}px`,
+        marginBottom: `${heroImageMarginBottom}px`,
+        marginLeft: `${heroImageMarginLeft}px`,
+        marginRight: `${heroImageMarginRight}px`,
         padding: `${heroImagePaddingTop}px ${heroImagePaddingRight}px ${heroImagePaddingBottom}px ${heroImagePaddingLeft}px`,
       }}
     >
