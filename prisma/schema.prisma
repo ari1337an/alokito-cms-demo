@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Slide {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  title                String
+  description          String
+  buttonText           String
+  buttonLink           String
+  buttonVariant        String
+  buttonIcon           String   @default("")
+  buttonIconSize       Int      @default(16)
+  buttonGap            Int      @default(2)
+  imageUrl             String
+  imageFit             String   @default("cover")
+  imageBackground      String   @default("transparent")
+  imageBackgroundColor String?
+  backgroundColor      String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  imageMargin          String   @default("")
+  imagePadding         String   @default("")
+  buttonPaddingX       Int      @default(4) // Default horizontal padding
+  buttonPaddingY       Int      @default(2) // Default vertical padding
+
+  // Hero Image fields (new)
+  heroImageUrl             String  @default("")
+  heroImageFit             String  @default("cover")
+  heroImageBackground      String  @default("transparent")
+  heroImageBackgroundColor String?
+  heroImageMargin          String  @default("")
+  heroImagePadding         String  @default("")
+  contentPaddingX          Int     @default(4)
+  contentPaddingY          Int     @default(4)
+  contentFont              String  @default("Inter")
+  titleFontSize            Int     @default(48) // Default for h1
+  titleFontWeight          Int     @default(700) // Default bold
+  descriptionFontSize      Int     @default(18) // Default for p
+  descriptionFontWeight    Int     @default(400) // Default normal
+  titleColor               String  @default("#000000")
+  descriptionColor         String  @default("#374151") // Default gray-700
+  buttonBgColor            String  @default("#000000")
+  buttonTextColor          String  @default("#ffffff")
+}
