@@ -3,60 +3,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, ArrowLeft } from "lucide-react";
-import { SlidesList } from "./components/slides-list";
+import SlidesList from "./components/slides-list";
 import { SlideEditor } from "./components/slide-editor";
-
-interface SlideContent {
-  id?: string;
-  title: string;
-  description: string;
-  buttonText: string;
-  buttonLink: string;
-  buttonVariant:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link"
-    | "primary"
-    | "custom";
-  buttonIcon: string;
-  buttonIconSize: number;
-  buttonGap: number;
-  imageUrl: string;
-  imageFit: "contain" | "cover" | "fill" | "none" | "scale-down";
-  imageBackground: "transparent" | "solid";
-  imageBackgroundColor?: string;
-  backgroundColor: string;
-  imageMargin: string;
-  imagePadding: string;
-  buttonPaddingX: number;
-  buttonPaddingY: number;
-  heroImageUrl: string;
-  heroImageFit: "contain" | "cover" | "fill" | "none" | "scale-down";
-  heroImageBackground: "transparent" | "solid";
-  heroImageBackgroundColor?: string;
-  heroImageMargin: string;
-  heroImagePadding: string;
-  contentPaddingX: number;
-  contentPaddingY: number;
-  contentFont: string;
-  titleFontSize: number;
-  titleFontWeight: number;
-  descriptionFontSize: number;
-  descriptionFontWeight: number;
-  titleColor: string;
-  descriptionColor: string;
-  buttonBgColor: string;
-  buttonTextColor: string;
-}
+import { Slide } from "./components/types";
 
 export default function CMSEdit() {
-  const [slides, setSlides] = useState<SlideContent[]>([]);
-  const [selectedSlideIndex, setSelectedSlideIndex] = useState<number | null>(
-    null
-  );
+  const [slides, setSlides] = useState<Slide[]>([]);
+  const [selectedSlideIndex, setSelectedSlideIndex] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/cms")
@@ -70,47 +23,72 @@ export default function CMSEdit() {
   }, []);
 
   const handleAddSlide = () => {
-    const newSlide: SlideContent = {
+    const newSlide: Slide = {
+      id: Math.random().toString(),
       title: "New Slide",
-      description: "Add your description here",
-      buttonText: "Click Here",
-      buttonLink: "/",
-      buttonVariant: "primary",
-      buttonIcon: "ArrowRight",
+      description: "This is a new slide. Edit it to customize the content.",
+      buttonText: "Learn More",
+      buttonLink: "#",
+      buttonVariant: "default",
+      buttonIcon: "",
       buttonIconSize: 16,
-      buttonGap: 2,
-      imageUrl: "https://alokitoteachers.com/bg-assets.svg",
+      buttonGap: 8,
+      buttonPaddingTop: 8,
+      buttonPaddingBottom: 8,
+      buttonPaddingLeft: 16,
+      buttonPaddingRight: 16,
+      imageUrl: "/placeholder-image.jpg",
       imageFit: "cover",
       imageBackground: "transparent",
-      imageBackgroundColor: "",
-      imageMargin: "",
-      imagePadding: "",
-      buttonPaddingX: 4,
-      buttonPaddingY: 2,
-      heroImageUrl: "https://alokitoteachers.com/hero-image.png",
+      imageBackgroundColor: "#000000",
+      backgroundColor: "bg-white dark:bg-gray-950",
+      imageMargin: "0",
+      imagePaddingTop: 0,
+      imagePaddingBottom: 0,
+      imagePaddingLeft: 0,
+      imagePaddingRight: 0,
+      heroImageUrl: "/placeholder-hero.jpg",
       heroImageFit: "cover",
       heroImageBackground: "transparent",
-      heroImageBackgroundColor: "",
-      heroImageMargin: "",
-      heroImagePadding: "",
+      heroImageBackgroundColor: "#000000",
+      heroImageMargin: "0",
+      heroImagePaddingTop: 0,
+      heroImagePaddingBottom: 0,
+      heroImagePaddingLeft: 0,
+      heroImagePaddingRight: 0,
       contentPaddingX: 4,
-      contentPaddingY: 4,
-      contentFont: "Inter",
+      contentPaddingY: 6,
+      contentFont: "sans",
       titleFontSize: 48,
       titleFontWeight: 700,
       descriptionFontSize: 18,
       descriptionFontWeight: 400,
       titleColor: "#000000",
-      descriptionColor: "#374151",
-      buttonBgColor: "#000000",
+      descriptionColor: "#666666",
+      buttonBgColor: "#3b82f6",
       buttonTextColor: "#ffffff",
-      backgroundColor: "",
+      titlePaddingTop: 0,
+      titlePaddingBottom: 0,
+      titlePaddingLeft: 0,
+      titlePaddingRight: 0,
+      descriptionPaddingTop: 0,
+      descriptionPaddingBottom: 0,
+      descriptionPaddingLeft: 0,
+      descriptionPaddingRight: 0,
+      titleMarginTop: 0,
+      titleMarginBottom: 16,
+      titleMarginLeft: 0,
+      titleMarginRight: 0,
+      descriptionMarginTop: 0,
+      descriptionMarginBottom: 24,
+      descriptionMarginLeft: 0,
+      descriptionMarginRight: 0,
     };
     setSlides((prev) => [...prev, newSlide]);
     setSelectedSlideIndex(slides.length);
   };
 
-  const handleSlideChange = (index: number, updatedSlide: SlideContent) => {
+  const handleSlideChange = (index: number, updatedSlide: Slide) => {
     setSlides((prev) => {
       const newSlides = [...prev];
       newSlides[index] = updatedSlide;
@@ -156,8 +134,8 @@ export default function CMSEdit() {
   return (
     <div className="min-h-screen bg-gray-50">
       {selectedSlideIndex !== null ? (
-        <div className="container mx-auto py-8">
-          <div className="flex items-center gap-4 mb-8">
+        <div className="h-screen">
+          <div className="flex items-center gap-4 p-4 border-b bg-background ml-20">
             <Button variant="ghost" onClick={() => setSelectedSlideIndex(null)}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Slides
