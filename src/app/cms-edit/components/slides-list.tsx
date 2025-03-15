@@ -1,25 +1,30 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Edit2, Trash2 } from "lucide-react"
+/* eslint-disable @next/next/no-img-element */
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Edit2, Trash2 } from "lucide-react";
 
 interface Slide {
-  id: string
-  title: string
-  description: string
-  buttonText: string
-  buttonLink: string
-  buttonVariant: string
-  imageUrl: string
-  backgroundColor: string
+  id?: string;
+  title: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+  buttonVariant: string;
+  imageUrl: string;
+  backgroundColor: string;
 }
 
 interface SlidesListProps {
-  slides: Slide[]
-  onSelectSlide: (index: number) => void
-  onDeleteSlide: (index: number, id: string) => void
+  slides: Slide[];
+  onSelectSlide: (index: number) => void;
+  onDeleteSlide: (index: number, id: string) => void;
 }
 
-export function SlidesList({ slides, onSelectSlide, onDeleteSlide }: SlidesListProps) {
+export function SlidesList({
+  slides,
+  onSelectSlide,
+  onDeleteSlide,
+}: SlidesListProps) {
   return (
     <div className="grid gap-4">
       {slides.map((slide, index) => (
@@ -35,7 +40,9 @@ export function SlidesList({ slides, onSelectSlide, onDeleteSlide }: SlidesListP
                   />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold truncate">{slide.title}</h3>
+                  <h3 className="text-lg font-semibold truncate">
+                    {slide.title}
+                  </h3>
                   <p className="text-sm text-gray-500 truncate max-w-md">
                     {slide.description}
                   </p>
@@ -53,7 +60,7 @@ export function SlidesList({ slides, onSelectSlide, onDeleteSlide }: SlidesListP
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => onDeleteSlide(index, slide.id)}
+                onClick={() => onDeleteSlide(index, slide.id ?? "")}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -62,5 +69,5 @@ export function SlidesList({ slides, onSelectSlide, onDeleteSlide }: SlidesListP
         </Card>
       ))}
     </div>
-  )
-} 
+  );
+}

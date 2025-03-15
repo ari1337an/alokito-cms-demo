@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +26,6 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Slide {
   id?: string;
@@ -103,7 +104,9 @@ const DynamicIcon = ({
       style={{
         width: size,
         height: size,
-        filter: color ? `invert(1) sepia(1) saturate(0) hue-rotate(180deg) brightness(100%) contrast(100%) drop-shadow(0 0 0 ${color})` : undefined
+        filter: color
+          ? `invert(1) sepia(1) saturate(0) hue-rotate(180deg) brightness(100%) contrast(100%) drop-shadow(0 0 0 ${color})`
+          : undefined,
       }}
     />
   );
@@ -113,7 +116,7 @@ export function SlideEditor({ slide, onSave, onCancel }: SlideEditorProps) {
   const [editedSlide, setEditedSlide] = useState(slide);
   const { icons, loading, hasMore, loadMoreIcons, filterIcons } =
     useLucideIcons();
-  const observerRef = useRef<IntersectionObserver>();
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const lastIconRef = useCallback(
     (node: HTMLDivElement) => {
