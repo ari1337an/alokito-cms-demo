@@ -792,10 +792,12 @@ export function SlideEditor({
                             <div className="relative border rounded p-1 w-16 h-10">
                               <Input
                                 type="color"
-                                value={editedSlide.backgroundColor}
+                                value={
+                                  editedSlide.imageBackgroundColor || "#ffffff"
+                                }
                                 onChange={(e) =>
                                   handleChange(
-                                    "backgroundColor",
+                                    "imageBackgroundColor",
                                     e.target.value
                                   )
                                 }
@@ -804,14 +806,21 @@ export function SlideEditor({
                               <div
                                 className="w-full h-full rounded"
                                 style={{
-                                  backgroundColor: editedSlide.backgroundColor,
+                                  backgroundColor:
+                                    editedSlide.imageBackgroundColor ||
+                                    "#ffffff",
                                 }}
                               />
                             </div>
                             <Input
-                              value={editedSlide.backgroundColor}
+                              value={
+                                editedSlide.imageBackgroundColor || "#ffffff"
+                              }
                               onChange={(e) =>
-                                handleChange("backgroundColor", e.target.value)
+                                handleChange(
+                                  "imageBackgroundColor",
+                                  e.target.value
+                                )
                               }
                               placeholder="#ffffff"
                               className="flex-1"

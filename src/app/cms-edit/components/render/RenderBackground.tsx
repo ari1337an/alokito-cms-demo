@@ -27,20 +27,25 @@ export default function RenderBackground({
 }: RenderBackgroundProps) {
   if (!imageUrl) return null;
 
+  // For transparent background with no color, show checkered pattern
+  // For solid background, apply the color
+  const showCheckeredPattern =
+    imageBackground === "transparent" && !imageBackgroundColor;
+  const backgroundColorStyle = {
+    backgroundColor:
+      imageBackground === "solid" ||
+      (imageBackground === "transparent" && imageBackgroundColor)
+        ? imageBackgroundColor
+        : undefined,
+  };
+
   return (
     <div
       className={cn(
         "absolute inset-0 w-full h-full overflow-hidden",
-        imageBackground === "transparent" &&
-          "bg-[url('/checkered-pattern.png')] bg-repeat"
+        showCheckeredPattern && "bg-[url('/checkered-pattern.png')] bg-repeat"
       )}
-      style={
-        imageBackground === "solid"
-          ? {
-              backgroundColor: imageBackgroundColor,
-            }
-          : undefined
-      }
+      style={backgroundColorStyle}
     >
       <img
         src={imageUrl}
